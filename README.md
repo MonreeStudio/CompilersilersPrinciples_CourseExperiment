@@ -1,6 +1,6 @@
 # 编译原理课程实验源代码  
 ## 实验一：词法分析  
-👉 LexicalAnalyzer.java  
+👉 [LexicalAnalyzer.java](https://github.com/MonreeStudio/CompilersilersPrinciples_CourseExperiment/blob/master/LexicalAnalyzer.java)  
 ### 任务 
 对指导书所给程序进行词法分析，输出单词的种别编码和值。（此处仅展示源代码）  
 ### 备注  
