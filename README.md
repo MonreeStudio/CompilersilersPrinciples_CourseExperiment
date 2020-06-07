@@ -6,7 +6,7 @@
 ### 备注  
 代码仅针对实验指导书所给的程序进行编写和调试，未进行严格的鲁棒性测试。  
 ## 实验二：语法分析(算术表达式的扩充)  
-👉 [GrammarAnalyzer ](https://github.com/MonreeStudio/CompilersilersPrinciples_CourseExperiment/blob/master/GrammarAnalyzer.java)
+👉 [GrammarAnalyzer.java](https://github.com/MonreeStudio/CompilersilersPrinciples_CourseExperiment/blob/master/GrammarAnalyzer.java)
 ### 任务  
 根据实验指导书所给文法重新设计LR分析表，并修改语义加工程序，最后验证修改的结果。  
 ### 备注 
