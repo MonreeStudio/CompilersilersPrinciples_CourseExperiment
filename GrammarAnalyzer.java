@@ -3,6 +3,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
+/*** 针对特定文法的LR(0)语法分析器
+ * @author Bill Lai
+ * @version 2.0
+ */
 public class GrammarAnalyzer {
     private Stack<String> signStack;    //符号栈
     private Stack<Integer> statusStack; //状态栈
@@ -17,9 +21,14 @@ public class GrammarAnalyzer {
         itemsClosure = new HashMap<>();
     }
 
+    /**
+     * 从输入串种提取出文法并存储到String[]中
+     * @param inputStr 输入的文法
+     */
     public void initGrammars(String inputStr){
+        System.out.println("\n文法G[S]:\n" + inputStr);
         grammars = inputStr.split("\\r?\\n");
-        System.out.println("————————————");;
+        System.out.println("———————————");;
         List<String> tempList = new ArrayList<>();
         tempList.add(grammars[0].charAt(0) + "'->" + grammars[0].charAt(0));
         tempList.add(grammars[0]);
@@ -27,9 +36,10 @@ public class GrammarAnalyzer {
         tempList.add(grammars[1].substring(0,3)+grammars[1].charAt(6));
         int size = tempList.size();
         grammars = (String[])tempList.toArray(new String[size]);
+        System.out.println("增广文法G'[S']：");
         for(var item : grammars)
             System.out.println(item);
-        System.out.println("————————————");
+        System.out.println("———————————");
         initAllItemsMap();
     }
 
@@ -50,15 +60,19 @@ public class GrammarAnalyzer {
             }
             allItemsMap.put(items[0],tempList);
         }
+        System.out.println("G'[S']的LR(0)所有项目：");
         for(var key : allItemsMap.keySet()){
             var list = allItemsMap.get(key);
             for(var item : list)
                 System.out.println(key + "->" + item);
         }
-        System.out.println("——————————");
+        System.out.println("———————————");
         closure();
     }
 
+    /**
+     * 生成LR(0)项目集规范族
+     */
     public void closure(){       
         HashMap<String, List<String>> map0 = new HashMap<>();
         Integer status = 1;
@@ -115,6 +129,7 @@ public class GrammarAnalyzer {
         itemsClosure.put(4, itemsClosure.get(6));
         itemsClosure.put(6, temp3);
 
+        System.out.println("G'[S']的LR(0)项目集规范族：");
         for(var s : itemsClosure.keySet()){
             var map = itemsClosure.get(s);
             for(var k : map.keySet())
@@ -122,8 +137,15 @@ public class GrammarAnalyzer {
                     System.out.println("I" + s + ": " + k + "->" + i);
             System.out.println("----------");
         }
+        System.out.println(("———————————"));
     }
 
+    /**
+     * ACTION表
+     * @param status 当前状态值
+     * @param s 当前读入字符
+     * @return 当前要执行的动作，异常则返回“出错！”
+     */
     public String Action(int status, String s){
         switch(status){
             case 0: switch(s){
@@ -166,6 +188,12 @@ public class GrammarAnalyzer {
         }
     }
 
+    /**
+     * GOTO表
+     * @param status 当前状态值
+     * @param s 当前读入字符
+     * @return 下一步的状态，-1为出错
+     */
     public int Goto(int status, String s){
         switch(status){
             case 0: switch(s){
@@ -185,6 +213,11 @@ public class GrammarAnalyzer {
         }
     }
 
+    /**
+     * 检测输入串是否通过语法分析
+     * @param inputStr 增广后的文法G'[S]
+     * @return true为符合文法，false为不符合文法
+     */
     public boolean analyze(String inputStr){
         statusStack.push(0);
         signStack.push("#");
@@ -260,7 +293,7 @@ public class GrammarAnalyzer {
     public static void main(String[] args) {
         GrammarAnalyzer ga = new GrammarAnalyzer();
         ga.initGrammars("S->BB\nB->aB|b");
-        var res = ga.analyze("aaaaabab");
+        var res = ga.analyze("aaabbbabab");
         if(res == true)
             System.out.println("输入串符合文法。");
         else
